@@ -115,7 +115,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KnapsackProblemByDynamProg.cpp" />
+    <ClCompile Include="libExceptions.cpp" />
+    <ClCompile Include="libFiles.cpp" />
+    <ClCompile Include="libTables.cpp" />
     <ClCompile Include="Podwika_Grzegorz_Program_02.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libExceptions.h" />
+    <ClInclude Include="libFiles.h" />
+    <ClInclude Include="libTables.h" />
+    <ClInclude Include="KnapsackProblemByDynamProg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
