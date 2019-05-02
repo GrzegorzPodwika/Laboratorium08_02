@@ -47,7 +47,9 @@ void showResultsOnScreen()
 
 void fillVectorsWithDataFromFile(fstream & inFile, vector<int>& massOfItems, vector<int>& priceOfItems)
 {
+	//pomocnicze zmienne do wczytywania z pliku
 	string tmpMass{}, tmpPrice{}, tmpName{};
+
 	while (!inFile.eof())
 	{
 		while (true)
@@ -74,8 +76,9 @@ void fillVectorsWithDataFromFile(fstream & inFile, vector<int>& massOfItems, vec
 
 void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings, vector < std::vector <int> > &vecOfConnectedItems, vector<int>& massOfItems, vector<int>& priceOfItems)
 {
+	//pomocnicze zmienne 
 	int maxMass = vecOfBestPackings[0].size() - 1;
-	int maxAmountOfItem{};
+	int maxAmountOfItemX{};
 	bool flagOfNumb{};
 	int indexOfPrice{};
 
@@ -83,11 +86,15 @@ void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings,
 	{
 		for (int j = 1; j < vecOfBestPackings[i].size(); j++)
 		{
-			maxAmountOfItem = maxMass / massOfItems[i];
 
+			maxAmountOfItemX = maxMass / massOfItems[i];
+
+			//jesli masa przedmiotu jest => od wczytanej j masy
 			if ((j - massOfItems[i]) >= 0)
 			{
-				for (int k = maxAmountOfItem; k >= 1; k--)
+				//I przypadek - bierzemy k razy, k = 1,2,3, ..., n tego samego wartosciowego przedmiotu, jesli k*price[i] => P[i][j]
+				//ponadto Q[i][j] = i
+				for (int k = maxAmountOfItemX; k >= 1; k--)
 				{
 					if (j >= k * massOfItems[i] && k * priceOfItems[i] >= vecOfBestPackings[i - 1][j]) {
 						vecOfBestPackings[i][j] = k * priceOfItems[i];
@@ -96,6 +103,10 @@ void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings,
 					}
 				}
 
+				/*II przypadek - jesli poprzedni warunek nie zaszedl, P[i][j] = max(P[i-1][j], price[i] + P[i-1][ j-weight[i] ])
+				ponadto jesli P[i-1][j] jest wieksze to Q[i][j] = Q[i-1][j]
+				w przeciwnym wypadku Q[i][j] = indexOfNumberEqualsToPrice(priceOfItems, price[i])
+				*/
 				if (vecOfBestPackings[i][j] == 0)
 				{
 					vecOfBestPackings[i][j] = maxOfTwoNumbers(vecOfBestPackings[i - 1][j], priceOfItems[i] + vecOfBestPackings[i - 1][j - massOfItems[i]], flagOfNumb);;
@@ -113,6 +124,9 @@ void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings,
 			}
 			else
 			{
+				/*III przypadek - jesli masa przedmiotu jest < od wczytanej j masy, P[i][j] = P[i-1][j]
+				ponadto jesli o jeden wyzej P[i-1][j] != 0 to  Q[i][j] = indexOfNumberEqualsToPrice(priceOfItems, P[i - 1][j])
+				*/
 				vecOfBestPackings[i][j] = vecOfBestPackings[i - 1][j];
 
 				if (vecOfBestPackings[i - 1][j] != 0) 
@@ -121,10 +135,10 @@ void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings,
 					vecOfConnectedItems[i][j] = indexOfPrice;
 				}
 			}
-
-
 		}
+
 	}
+
 }
 
 int maxOfTwoNumbers(int numA, int numB, bool &flagOfNumb)
