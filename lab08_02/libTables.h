@@ -1,11 +1,11 @@
 #ifndef LIBTABLES_H
 #define LIBTABLES_H
 
+#include <vector>
 #include <iostream>
 #include <cmath>
 #include <algorithm>
 #include <random>
-#include <vector>
 
 /*
 Funkcja tworzaca dynamiczna tablice jednowymiarowa
