@@ -3,6 +3,7 @@
 
 #include "libTables.h"
 #include "libFiles.h"
+#include "libExceptions.h"
 #include <vector>
 #include <iostream>
 #include <fstream>

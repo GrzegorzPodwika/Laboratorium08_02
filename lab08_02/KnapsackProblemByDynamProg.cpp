@@ -8,7 +8,18 @@ void showResultsOnScreen()
 
 	//wczytanie najwiekszej masy z pliku
 	int maxMass{};
-	inFile >> maxMass;
+	try
+	{
+		inFile >> maxMass;
+		if (maxMass <= 0)
+			throw EXCEPTION_CODE::notNaturalNumber;
+	}
+	catch (EXCEPTION_CODE error)
+	{
+		seeExceptions(error);
+		exit(0);
+	}
+
 
 	//utworzenie pomocniczych wektorow + wstepna inicjalizacja zerowych indexow zerami
 	vector <int> massOfItems(1);
@@ -74,7 +85,7 @@ void fillVectorsWithDataFromFile(fstream & inFile, vector<int>& massOfItems, vec
 	}
 }
 
-void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings, vector < std::vector <int> > &vecOfConnectedItems, vector<int>& massOfItems, vector<int>& priceOfItems)
+void fillVectorOfBestPackingsByDynamProg(vector<vector<int>>& vecOfBestPackings, vector < vector <int> > &vecOfConnectedItems, vector<int>& massOfItems, vector<int>& priceOfItems)
 {
 	//pomocnicze zmienne 
 	int maxMass = vecOfBestPackings[0].size() - 1;
@@ -156,7 +167,7 @@ int maxOfTwoNumbers(int numA, int numB, bool &flagOfNumb)
 
 }
 
-int indexOfNumberEqualsToPrice(std::vector<int>& priceOfItems, int number)
+int indexOfNumberEqualsToPrice(vector<int>& priceOfItems, int number)
 {
 	int searchIndex{};
 	
